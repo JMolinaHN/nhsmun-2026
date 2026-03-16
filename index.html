@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHSMUN 2026 | Team Journey</title>
+    <meta name="description"
+        content="Live updates, timeline, academic presentations, and media gallery for the NHSMUN 2026 Team Journey to the UN Headquarters in New York.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        unBlue: '#418fde',
+                        darkBg: '#0b1120',
+                        glassBorder: 'rgba(255, 255, 255, 0.08)',
+                        glassBg: 'rgba(30, 41, 59, 0.4)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1120;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, rgba(65, 143, 222, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(65, 143, 222, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(65, 143, 222, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(65, 143, 222, 0.1);
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(65, 143, 222, 0.5), transparent);
+        }
+
+        .media-item {
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 1.5rem;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b1120;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        .play-button-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .media-item:hover .play-button-overlay {
+            background: rgba(65, 143, 222, 0.8);
+            border-color: #418fde;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Pulse Animation for Live Status */
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(65, 143, 222, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(65, 143, 222, 0);
+            }
+
+            100% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(65, 143, 222, 0);
+            }
+        }
+
+        .live-indicator {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="antialiased font-sans selection:bg-unBlue selection:text-white pb-20">
+
+    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f0a?auto=format&fit=crop&q=80&w=2000"
+                alt="UN Headquarters Background"
+                class="w-full h-full object-cover object-center scale-105 opacity-40" />
+            <div class="absolute inset-0 bg-gradient-to-b from-darkBg/90 via-darkBg/80 to-darkBg"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto flex flex-col items-center w-full mt-10">
+            <div
+                class="mb-6 inline-flex items-center px-5 py-2 rounded-full border border-unBlue/40 bg-unBlue/10 backdrop-blur-md text-blue-200 text-sm font-semibold tracking-widest uppercase shadow-[0_0_15px_rgba(65,143,222,0.3)]">
+                <i class="fas fa-globe-americas mr-3"></i> NHS MUN 2026
+            </div>
+
+            <h1
+                class="text-6xl md:text-8xl lg:text-9xl font-serif text-white tracking-tight leading-none mb-6 drop-shadow-2xl">
+                The <span
+                    class="text-transparent bg-clip-text bg-gradient-to-br from-blue-300 via-unBlue to-indigo-500 italic">Journey</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-slate-300 mb-14 max-w-4xl font-light leading-relaxed drop-shadow-md">
+                Documenting our high school's incredible experience at the United Nations Headquarters in New York.
+            </p>
+
+            <div class="glass-card p-6 md:p-10 rounded-3xl w-full max-w-3xl border-t-4 border-t-unBlue">
+                <p class="text-xs md:text-sm uppercase tracking-[0.3em] text-blue-300 font-bold mb-6">Countdown to
+                    Closing Ceremonies</p>
+                <div id="countdown" class="flex justify-center gap-4 md:gap-10 text-white">
+                    <div class="flex flex-col items-center">
+                        <span id="days" class="text-5xl md:text-7xl font-bold tracking-tighter tabular-nums">00</span>
+                        <span class="text-xs font-semibold text-slate-400 uppercase mt-3 tracking-widest">Days</span>
+                    </div>
+                    <div class="text-5xl md:text-7xl font-light text-slate-600 mt-[-4px]">:</div>
+                    <div class="flex flex-col items-center">
+                        <span id="hours" class="text-5xl md:text-7xl font-bold tracking-tighter tabular-nums">00</span>
+                        <span class="text-xs font-semibold text-slate-400 uppercase mt-3 tracking-widest">Hours</span>
+                    </div>
+                    <div class="text-5xl md:text-7xl font-light text-slate-600 mt-[-4px]">:</div>
+                    <div class="flex flex-col items-center">
+                        <span id="minutes"
+                            class="text-5xl md:text-7xl font-bold tracking-tighter tabular-nums">00</span>
+                        <span class="text-xs font-semibold text-slate-400 uppercase mt-3 tracking-widest">Mins</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 lg:absolute lg:bottom-10 lg:mt-0">
+                <a href="#welcome"
+                    class="inline-flex items-center justify-center w-14 h-14 rounded-full border border-white/10 bg-white/5 hover:bg-unBlue/20 text-white backdrop-blur-sm transition-all duration-300 animate-bounce cursor-pointer">
+                    <i class="fas fa-chevron-down text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="welcome" class="py-16 relative z-10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden border-l-4 border-l-amber-500">
+                <div class="absolute -right-10 -top-10 opacity-5">
+                    <i class="fas fa-quote-right text-9xl"></i>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-serif text-white mb-6">A Note from Home</h2>
+                <div class="space-y-4 text-slate-300 text-lg leading-relaxed font-light">
+                    <p>Welcome to our live scrapbook for the 2026 National High School Model United Nations conference!
+                    </p>
+                    <p>As parents and supporters, we know firsthand just how much effort, intelligence, and sheer
+                        willpower went into preparing for this trip. We created this page to stay connected and
+                        celebrate our incredible team as they take on New York City and the UN Headquarters.</p>
+                    <p>Here, you'll find live photo updates, daily briefings, and a behind-the-scenes look at our
+                        delegates in action. A massive thank you to the teachers who made this expedition possible and
+                        who are keeping everything running smoothly on the ground.</p>
+                    <p class="font-medium text-white pt-4">To our delegates: Have an amazing time, debate fiercely, and
+                        make some unforgettable memories. We can't wait to see the world through your eyes this week.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="briefing" class="py-16 relative z-10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="flex items-center justify-center gap-4 mb-16">
+                <div class="w-4 h-4 rounded-full bg-unBlue live-indicator"></div>
+                <h2 class="text-4xl md:text-5xl font-serif text-white tracking-tight">The Daily Briefing</h2>
+            </div>
+            <div id="timelineContainer" class="relative timeline-line pl-12 py-4 space-y-12">
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-24 relative z-10 bg-slate-900/40 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-serif text-white tracking-tight mb-4">Media Archive</h2>
+                <div class="h-1 w-20 bg-unBlue mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Live photo updates and video highlights from our
+                    days in the city and inside the UN committee sessions.</p>
+            </div>
+            <div id="mediaGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+        </div>
+    </section>
+
+    <section id="academics" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-serif text-white tracking-tight mb-4">Academic & Committee Work
+                </h2>
+                <div class="h-1 w-20 bg-emerald-500 mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Access the position papers, resolutions, and
+                    presentation materials crafted by our student delegates.</p>
+            </div>
+            <div id="materialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </div>
+    </section>
+
+    <section id="roster" class="py-24 relative z-10 bg-slate-900/40 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-serif text-white tracking-tight mb-4">Team Roster</h2>
+                <div class="h-1 w-20 bg-indigo-500 mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Meet the exceptional student delegates and dedicated
+                    faculty advisors making this trip a success.</p>
+            </div>
+
+            <div class="mb-20">
+                <div class="flex items-center gap-4 mb-10">
+                    <div
+                        class="w-12 h-12 bg-white/5 border border-white/10 text-white rounded-xl flex items-center justify-center text-xl shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 class="text-3xl font-serif text-white">Faculty Advisors</h3>
+                </div>
+                <div id="teachersGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center gap-4 mb-10">
+                    <div
+                        class="w-12 h-12 bg-unBlue/10 border border-unBlue/30 text-unBlue rounded-xl flex items-center justify-center text-xl shadow-[0_0_15px_rgba(65,143,222,0.2)]">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-3xl font-serif text-white">Student Delegates</h3>
+                </div>
+                <div id="delegatesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="comments" class="py-24 relative z-10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-serif text-white tracking-tight mb-4">Community Board</h2>
+                <div class="h-1 w-20 bg-amber-500 mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Messages, cheers, and comments from parents and the
+                    school community back home.</p>
+            </div>
+
+            <div
+                class="glass-card rounded-2xl p-6 mb-12 border border-blue-500/30 shadow-[0_0_30px_rgba(65,143,222,0.1)] relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-unBlue"></div>
+                <h4 class="text-lg font-bold text-white mb-4"><i class="fas fa-pen-fancy mr-2 text-unBlue"></i>Leave a
+                    message for the team!</h4>
+                <div class="flex flex-col gap-4">
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700">
+                            <i class="fas fa-user text-slate-500"></i>
+                        </div>
+                        <input type="text" placeholder="Your Name or Relation (e.g., 'Sam's Mom')"
+                            class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-unBlue focus:ring-1 focus:ring-unBlue transition-colors"
+                            disabled>
+                    </div>
+                    <textarea placeholder="Write your words of encouragement here... (Note: This is a static demo)"
+                        rows="3"
+                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-unBlue focus:ring-1 focus:ring-unBlue transition-colors"
+                        disabled></textarea>
+                    <div class="flex justify-end">
+                        <button
+                            class="bg-unBlue hover:bg-blue-600 text-white font-medium py-2.5 px-6 rounded-xl transition-colors shadow-lg disabled:opacity-50"
+                            disabled>Post Message <i class="fas fa-paper-plane ml-2"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="commentsContainer" class="space-y-6">
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 py-12 border-t border-white/5 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-globe-americas text-unBlue text-2xl"></i>
+                <span class="text-white font-serif font-bold text-xl tracking-wide">NHSMUN 2026</span>
+            </div>
+            <p class="text-sm text-slate-500">&copy; 2026 High School Model UN. Built for the Team.</p>
+        </div>
+    </footer>
+
+    <div id="mediaModal"
+        class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <button id="closeModalBtn"
+            class="absolute top-6 right-6 lg:top-8 lg:right-8 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center text-xl hover:bg-unBlue transition-all z-50 cursor-pointer border border-white/20">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="modalContentContainer"
+            class="max-h-[85vh] max-w-[95vw] lg:max-w-[80vw] transform scale-95 transition-transform duration-300 flex justify-center items-center shadow-[0_0_80px_rgba(0,0,0,0.8)] rounded-xl overflow-hidden bg-black">
+        </div>
+        <div id="modalCaption"
+            class="absolute bottom-8 left-0 right-0 text-center text-slate-400 text-sm tracking-widest uppercase opacity-0 transition-opacity duration-300 delay-100 font-medium">
+        </div>
+    </div>
+
+    <script>
+        const countdownTargetDate = "March 20, 2026 18:00:00";
+
+        const mediaArchive = [
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1577412647305-991150c7d163?auto=format&fit=crop&q=80&w=800", caption: "Walking into the UN General Assembly" },
+            { type: "image", url: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", caption: "NYC Skyline from our Hotel" },
+            { type: "image", url: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=800", caption: "Exploring Midtown Manhattan" },
+            { type: "image", url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800", caption: "Last minute preparation in the lobby" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800", caption: "Opening Ceremonies Speech" },
+            { type: "image", url: "https://images.unsplash.com/photo-1507676184212-d0330a15183e?auto=format&fit=crop&q=80&w=800", caption: "Team dinner at Times Square" }
+        ];
+
+        const academicMaterials = [
+            { title: "Resolution on Clean Water Security", delegate: "Taylor Williams (WHO)", type: "Draft Resolution", link: "#", icon: "fa-file-invoice" },
+            { title: "Position Paper: Refugee Resettlement", delegate: "Sam Patel (UNHCR)", type: "Position Paper", link: "#", icon: "fa-file-alt" },
+            { title: "Disarmament of Non-State Actors", delegate: "Alex Rivera (DISEC)", type: "Working Paper", link: "#", icon: "fa-shield-alt" },
+            { title: "Climate Finance Framework 2030", delegate: "Casey Johnson (UNEP)", type: "Presentation", link: "#", icon: "fa-leaf" }
+        ];
+
+        const timelineUpdates = [
+            { time: "Today, 9:00 AM", title: "Gavel Drop at Opening Ceremonies", icon: "fa-solid fa-gavel", iconColor: "text-unBlue", content: "Opening ceremonies at the UN General Assembly Hall were spectacular. Our delegates are inspired and ready to start their first committee sessions." },
+            { time: "Yesterday, 7:30 PM", title: "Dinner in Times Square", icon: "fa-solid fa-city", iconColor: "text-amber-500", content: "After settling into the hotel, the team took a quick walk to Times Square." },
+            { time: "Yesterday, 2:15 PM", title: "Landed safely at JFK", icon: "fa-solid fa-plane-arrival", iconColor: "text-emerald-500", content: "Our flight safely touched down and we are heading to Midtown." }
+        ];
+
+        const facultyData = [
+            { name: "Ms. Sarah Jenkins", role: "Head Advisor", bio: "Leading the NHSMUN team for 8 consecutive years. AP Government teacher with a passion for international relations, bringing a wealth of knowledge to guide our delegates.", photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300&h=300" },
+            { name: "Mr. David Chen", role: "Chaperone / Coach", bio: "History department chair and dedicated debate coach. Keeping the team motivated and on schedule throughout the busy conference weekend.", photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300&h=300" }
+        ];
+
+        const delegatesData = [
+            { name: "Alex Rivera", role: "Head Delegate", committee: "DISEC", bio: "Senior class president. Focusing on cybersecurity policies.", photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200&h=200" },
+            { name: "Jordan Smith", role: "Delegate", committee: "SOCHUM", bio: "Junior debater. Passionate about human rights.", photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200&h=200" },
+            { name: "Taylor Williams", role: "Delegate", committee: "WHO", bio: "Prospective premed student discussing global vaccine access.", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200&h=200" },
+            { name: "Casey Johnson", role: "Delegate", committee: "UNEP", bio: "Environmental club leader advocating for clean energy.", photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200" }
+        ];
+
+        const communityComments = [
+            { name: "Principal Henderson", time: "2 hours ago", text: "Incredibly proud of the entire team! Represent our school with honor and excellence." },
+            { name: "Mark's Mom", time: "5 hours ago", text: "The photos are amazing. Stay warm up there in New York and good luck in the committees!" },
+            { name: "Debate Club Alumni", time: "1 day ago", text: "NHSMUN is an experience you will never forget. Make the most of it, delegates!" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Countdown Timer ---
+            const targetTime = new Date(countdownTargetDate).getTime();
+            const timerContainer = document.getElementById("countdown");
+
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetTime - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    timerContainer.innerHTML = "<div class='text-3xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-white'>Ceremonies Have Begun!</div>";
+                    return;
+                }
+
+                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            }, 1000);
+
+            // --- Media Renderer ---
+            const mediaGrid = document.getElementById('mediaGrid');
+            mediaArchive.forEach((item, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "media-item relative aspect-square sm:aspect-[4/5] bg-slate-800 group border border-white/5";
+
+                const imgSrc = item.type === "video" ? item.thumbnail : item.url;
+                let html = `<img src="${imgSrc}" alt="Media ${index}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">`;
+
+                if (item.type === "video") {
+                    html += `<div class="play-button-overlay"><i class="fas fa-play"></i></div>`;
+                } else {
+                    html += `
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 mb-2 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                            </div>
+                        </div>
+                    `;
+                }
+                wrapper.innerHTML = html;
+                wrapper.addEventListener('click', () => openLightbox(item));
+                mediaGrid.appendChild(wrapper);
+            });
+
+            // --- Academics Renderer ---
+            const materialsGrid = document.getElementById('materialsGrid');
+            academicMaterials.forEach(mat => {
+                const item = document.createElement('div');
+                item.className = "glass-card p-6 rounded-2xl group flex flex-col justify-between h-full";
+                item.innerHTML = `
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-emerald-400 mb-6 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
+                            <i class="fas ${mat.icon} text-xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2 leading-tight">${mat.title}</h4>
+                        <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-4">${mat.type}</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center hidden">
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                         <span class="text-sm text-slate-400"><i class="fas fa-user-edit mr-2 text-slate-500"></i>${mat.delegate}</span>
+                         <a href="${mat.link}" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-emerald-500 hover:text-white transition-colors border border-white/10"><i class="fas fa-download text-xs"></i></a>
+                    </div>
+                `;
+                materialsGrid.appendChild(item);
+            });
+
+            // --- Timeline Renderer ---
+            const timelineContainer = document.getElementById('timelineContainer');
+            timelineUpdates.forEach((update) => {
+                const item = document.createElement('div');
+                item.className = "relative flex items-start group";
+                item.innerHTML = `
+                    <div class="absolute -left-[42px] top-1 bg-slate-900 text-xl w-[36px] h-[36px] rounded-full flex items-center justify-center border-2 border-slate-700 shadow-sm group-hover:border-unBlue group-hover:scale-110 transition-all z-10 duration-300">
+                        <i class="${update.icon} ${update.iconColor} text-[14px]"></i>
+                    </div>
+                    <div class="glass-card p-6 md:p-8 rounded-3xl w-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
+                            <h3 class="text-2xl font-bold text-white leading-tight font-serif">${update.title}</h3>
+                            <span class="text-xs font-bold text-unBlue bg-unBlue/10 px-3 py-1 rounded-full whitespace-nowrap tracking-wide border border-unBlue/20">${update.time}</span>
+                        </div>
+                        <p class="text-slate-400 text-base leading-relaxed">${update.content}</p>
+                    </div>
+                `;
+                timelineContainer.appendChild(item);
+            });
+
+            // --- Roster Renderer ---
+            const teachersContainer = document.getElementById('teachersGrid');
+            facultyData.forEach(person => {
+                const item = document.createElement('div');
+                item.className = "glass-card p-6 md:p-8 rounded-3xl flex flex-col md:flex-row gap-6 items-center md:items-start";
+                item.innerHTML = `
+                    <img src="${person.photo}" alt="${person.name}" class="w-24 h-24 rounded-full object-cover border-4 border-slate-800 shadow-lg shrink-0">
+                    <div class="text-center md:text-left">
+                        <h4 class="text-2xl font-serif font-bold text-white mb-1">${person.name}</h4>
+                        <p class="text-xs text-unBlue font-bold tracking-[0.2em] uppercase mb-4">${person.role}</p>
+                        <p class="text-slate-400 text-sm leading-relaxed">${person.bio}</p>
+                    </div>
+                `;
+                teachersContainer.appendChild(item);
+            });
+
+            const delegatesContainer = document.getElementById('delegatesGrid');
+            delegatesData.forEach(person => {
+                const item = document.createElement('div');
+                item.className = "glass-card p-6 rounded-3xl flex flex-col items-center text-center";
+                item.innerHTML = `
+                    <div class="relative w-24 h-24 mb-5">
+                        <img src="${person.photo}" alt="${person.name}" class="w-full h-full rounded-full object-cover border-[3px] border-slate-700">
+                        <div class="absolute -bottom-2 -right-2 bg-unBlue text-white text-[10px] font-bold px-2 py-1 rounded-md border-2 border-slate-900">${person.committee}</div>
+                    </div>
+                    <h4 class="font-bold text-lg text-white mb-1">${person.name}</h4>
+                    <p class="text-[10px] text-slate-400 font-bold tracking-[0.15em] uppercase mb-3">${person.role}</p>
+                    <p class="text-xs text-slate-500 leading-relaxed px-2">${person.bio}</p>
+                `;
+                delegatesContainer.appendChild(item);
+            });
+
+            // --- Comments Renderer ---
+            const commentsContainer = document.getElementById('commentsContainer');
+            communityComments.forEach(comment => {
+                const item = document.createElement('div');
+                item.className = "glass-card p-5 rounded-2xl flex gap-4";
+                item.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700 text-slate-400">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h5 class="text-white font-bold text-sm text-unBlue">${comment.name}</h5>
+                            <span class="text-slate-500 text-xs text-[10px]">• ${comment.time}</span>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed">${comment.text}</p>
+                    </div>
+                `;
+                commentsContainer.appendChild(item);
+            });
+
+            // --- Lightbox Logic ---
+            const modal = document.getElementById('mediaModal');
+            const modalContentContainer = document.getElementById('modalContentContainer');
+            const closeBtn = document.getElementById('closeModalBtn');
+            const modalCaption = document.getElementById('modalCaption');
+
+            function openLightbox(item) {
+                modalContentContainer.innerHTML = '';
+
+                if (item.type === "video") {
+                    modalContentContainer.innerHTML = `<video controls autoplay class="max-h-[85vh] w-auto max-w-[95vw] lg:max-w-[80vw] object-contain outline-none"><source src="${item.url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+                } else {
+                    modalContentContainer.innerHTML = `<img src="${item.url}" alt="Enlarged View" class="max-h-[85vh] w-auto max-w-[95vw] lg:max-w-[80vw] object-contain">`;
+                }
+
+                modalCaption.innerText = item.caption || "Media Item";
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+
+                setTimeout(() => {
+                    modalContentContainer.classList.remove('scale-95');
+                    modalCaption.classList.remove('opacity-0');
+                }, 10);
+
+                document.body.style.overflow = 'hidden';
+                document.addEventListener('keydown', handleEscape);
+            }
+
+            function closeLightbox() {
+                modalContentContainer.classList.add('scale-95');
+                modalCaption.classList.add('opacity-0');
+                modal.classList.add('opacity-0');
+
+                setTimeout(() => {
+                    modal.classList.add('pointer-events-none');
+                    modalContentContainer.innerHTML = ''; // reset content (stops video)
+                }, 300);
+
+                document.body.style.overflow = '';
+                document.removeEventListener('keydown', handleEscape);
+            }
+
+            function handleEscape(e) { if (e.key === 'Escape') closeLightbox(); }
+
+            closeBtn.addEventListener('click', closeLightbox);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeLightbox();
+            });
+        });
+    </script>
+</body>
+
+</html>
